@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2014-2022 Security Onion Solutions, LLC
+# Copyright 2014-2023 Security Onion Solutions, LLC
 
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -212,7 +212,7 @@ check_local_mods() {
     if [[ -f $default_file ]]; then
       file_diff=$(diff "$default_file" "$local_file" )
       if [[ ! " ${local_ignore_arr[*]} " =~ " ${local_file} " ]]; then
-        if [[ $(echo "$file_diff" | grep -c "^<") -gt 0 ]]; then
+        if [[ $(echo "$file_diff" | grep -Ec "^[<>]") -gt 0 ]]; then
           local_mod_arr+=( "$local_file" )
         fi
       fi
@@ -548,6 +548,16 @@ preupgrade_changes() {
     [[ "$INSTALLEDVERSION" == 2.3.150 ]] && up_to_2.3.160
     [[ "$INSTALLEDVERSION" == 2.3.160 ]] && up_to_2.3.170
     [[ "$INSTALLEDVERSION" == 2.3.170 ]] && up_to_2.3.180
+    [[ "$INSTALLEDVERSION" == 2.3.180 ]] && up_to_2.3.181
+    [[ "$INSTALLEDVERSION" == 2.3.181 ]] && up_to_2.3.182
+    [[ "$INSTALLEDVERSION" == 2.3.182 ]] && up_to_2.3.190
+    [[ "$INSTALLEDVERSION" == 2.3.190 ]] && up_to_2.3.200
+    [[ "$INSTALLEDVERSION" == 2.3.200 ]] && up_to_2.3.210
+    [[ "$INSTALLEDVERSION" == 2.3.210 ]] && up_to_2.3.220
+    [[ "$INSTALLEDVERSION" == 2.3.220 ]] && up_to_2.3.230
+    [[ "$INSTALLEDVERSION" == 2.3.230 ]] && up_to_2.3.240
+    [[ "$INSTALLEDVERSION" == 2.3.240 ]] && up_to_2.3.250
+    
     true
 }
 
@@ -568,6 +578,15 @@ postupgrade_changes() {
     [[ "$POSTVERSION" == 2.3.150 ]] && post_to_2.3.160
     [[ "$POSTVERSION" == 2.3.160 ]] && post_to_2.3.170
     [[ "$POSTVERSION" == 2.3.170 ]] && post_to_2.3.180
+    [[ "$POSTVERSION" == 2.3.180 ]] && post_to_2.3.181
+    [[ "$POSTVERSION" == 2.3.181 ]] && post_to_2.3.182
+    [[ "$POSTVERSION" == 2.3.182 ]] && post_to_2.3.190
+    [[ "$POSTVERSION" == 2.3.190 ]] && post_to_2.3.200
+    [[ "$POSTVERSION" == 2.3.200 ]] && post_to_2.3.210
+    [[ "$POSTVERSION" == 2.3.210 ]] && post_to_2.3.220
+    [[ "$POSTVERSION" == 2.3.220 ]] && post_to_2.3.230
+    [[ "$POSTVERSION" == 2.3.230 ]] && post_to_2.3.240
+    [[ "$POSTVERSION" == 2.3.240 ]] && post_to_2.3.250
 
     true
 }
@@ -653,18 +672,67 @@ post_to_2.3.140() {
 
 post_to_2.3.150() {
   echo "Nothing to do for .150"
+  POSTVERSION=2.3.150
 }
 
 post_to_2.3.160() {
   echo "Nothing to do for .160"
+  POSTVERSION=2.3.160
 }
 
 post_to_2.3.170() {
   echo "Nothing to do for .170"
+  POSTVERSION=2.3.170
 }
 
 post_to_2.3.180() {
   echo "Nothing to do for .180"
+  POSTVERSION=2.3.180
+}
+
+post_to_2.3.181() {
+  echo "Nothing to do for .181"
+  POSTVERSION=2.3.181
+}
+
+post_to_2.3.182() {
+  echo "Nothing to do for .182"
+  POSTVERSION=2.3.182
+}
+
+post_to_2.3.190() {
+  echo "Nothing to do for .190"
+  POSTVERSION=2.3.190
+}
+
+post_to_2.3.200() {
+  echo "Nothing to do for .200"
+  POSTVERSION=2.3.200
+}
+
+post_to_2.3.210() {
+  echo "Nothing to do for .210"
+  POSTVERSION=2.3.210
+}
+
+post_to_2.3.220() {
+  echo "Nothing to do for .220"
+  POSTVERSION=2.3.220
+}
+
+post_to_2.3.230() {
+  echo "Nothing to do for .230"
+  POSTVERSION=2.3.230
+}
+
+post_to_2.3.240() {
+  echo "Nothing to do for .240"
+  POSTVERSION=2.3.240
+}
+
+post_to_2.3.250() {
+  echo "Nothing to do for .250"
+  POSTVERSION=2.3.250
 }
 
 stop_salt_master() {
@@ -923,9 +991,9 @@ up_to_2.3.110() {
 
 up_to_2.3.120() {
   # Stop thehive services since these will be broken in .120
-  so-thehive-stop
-  so-thehive-es-stop
-  so-cortex-stop
+  so-thehive-stop || true
+  so-thehive-es-stop || true
+  so-cortex-stop || true
   INSTALLEDVERSION=2.3.120
 }
 
@@ -959,6 +1027,67 @@ up_to_2.3.170() {
 up_to_2.3.180() {
   echo "Upgrading to 2.3.180"
   INSTALLEDVERSION=2.3.180
+}
+
+up_to_2.3.181() {
+  echo "Upgrading to 2.3.181"
+  INSTALLEDVERSION=2.3.181
+}
+
+up_to_2.3.182() {
+  echo "Upgrading to 2.3.182"
+  INSTALLEDVERSION=2.3.182
+}
+
+up_to_2.3.190() {
+  echo "Upgrading to 2.3.190"
+  if [ -d /nsm/zeek/extracted/complete ]; then
+    chown -R zeek:socore /nsm/zeek/extracted/complete
+    chmod 770 /nsm/zeek/extracted/complete
+  fi
+  INSTALLEDVERSION=2.3.190
+}
+
+up_to_2.3.200() {
+  echo "Upgrading to 2.3.200"
+  if [ ! -d /nsm/kratos ]; then
+    mkdir /nsm/kratos
+    chown -R kratos:kratos /nsm/kratos
+    chmod 700 /nsm/kratos
+  fi
+  if [ ! -d /nsm/kratos/db ]; then
+    echo "Moving Kratos DB to /nsm partition..."
+    mv /opt/so/conf/kratos/db /nsm/kratos/
+    echo "Move completed successfully"
+  else
+    echo "WARNING: /nsm/kratos/db already exists. This is unexpected and could result in SOC users no longer being able to login."
+  fi
+  INSTALLEDVERSION=2.3.200
+}
+
+up_to_2.3.210() {
+  echo "Upgrading to 2.3.210"
+  INSTALLEDVERSION=2.3.210
+}
+
+up_to_2.3.220() {
+  echo "Upgrading to 2.3.220"
+  INSTALLEDVERSION=2.3.220
+}
+
+up_to_2.3.230() {
+  echo "Upgrading to 2.3.230"
+  INSTALLEDVERSION=2.3.230
+}
+
+up_to_2.3.240() {
+  echo "Upgrading to 2.3.240"
+  INSTALLEDVERSION=2.3.240
+}
+
+up_to_2.3.250() {
+  echo "Upgrading to 2.3.250"
+  INSTALLEDVERSION=2.3.250
 }
 
 verify_upgradespace() {
@@ -1158,14 +1287,14 @@ verify_latest_update_script() {
   if [[ "$CURRENTSOUP" == "$GITSOUP" && "$CURRENTCMN" == "$GITCMN" && "$CURRENTIMGCMN" == "$GITIMGCMN" && "$CURRENTSOFIREWALL" == "$GITSOFIREWALL" ]]; then
     echo "This version of the soup script is up to date. Proceeding."
   else
-    echo "You are not running the latest soup version. Updating soup and its components. Might take multiple runs to complete"
+    echo "You are not running the latest soup version. Updating soup and its components. This might take multiple runs to complete."
     cp $UPDATE_DIR/salt/common/tools/sbin/soup $DEFAULT_SALT_DIR/salt/common/tools/sbin/
     cp $UPDATE_DIR/salt/common/tools/sbin/so-common $DEFAULT_SALT_DIR/salt/common/tools/sbin/
     cp $UPDATE_DIR/salt/common/tools/sbin/so-image-common $DEFAULT_SALT_DIR/salt/common/tools/sbin/
     cp $UPDATE_DIR/salt/common/tools/sbin/so-firewall $DEFAULT_SALT_DIR/salt/common/tools/sbin/
     salt-call state.apply common.soup_scripts queue=True -linfo --file-root=$UPDATE_DIR/salt --local
     echo ""
-    echo "soup has been updated. Please run soup again."
+    echo "The soup script has been modified. Please run soup again to continue the upgrade."
     exit 0
   fi
 }
